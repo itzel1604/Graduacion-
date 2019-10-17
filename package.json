@@ -1,0 +1,13 @@
+{
+  "name": "graduacion",
+  "version": "1.0.0",
+  "description": "sitio web de la graduacion de 2018-2021",
+  "main": "index.js",
+  "author": "IGA",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "gulp": "^4.0.2",
+    "jquery": "^3.4.1"
+  }
+}
