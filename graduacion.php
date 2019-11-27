@@ -1,3 +1,8 @@
+<?php
+session_start();
+session_destroy();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,20 +15,96 @@
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script>
-        $(document).ready(function(){
-        $("#guardar").on("click", function(){
-        var $nombre = $("#nombre");
-        var $email = $("#email");
+     $(document).ready(function(){
+        $("#btnIniciar").on("click", function(){
+        var $usuario = $("#usuario");
+        var $password = $("#password");
     
-        if($nombre.val().length==0){
-            $nombre.addClass("alert-danger");
+        if($usuario.val().length==0){
+            $usuario.addClass("alert-danger");
             setTimeout(function(){
-                $nombre.removeClass("alert-danger");
+                $usuario.removeClass("alert-danger");
             },3000);
     
             $("#error").fadeIn(2000).delay(4000).fadeOut(2000);
         }
     
+        if($password.val().length==0){
+            $password.addClass("alert-danger");
+            setTimeout(function(){
+                $password.removeClass("alert-danger");
+            },3000);
+    
+            $("#error").fadeIn(2000).delay(4000).fadeOut(2000);
+        }
+    });
+        });
+    </script>
+    
+    <script>
+        $(function(){
+            $boton = $("#btnIniciar");
+            $spin=$(".fa-spinner");
+    
+            $boton.on("click",function(evento){
+                evento.preventDefault();
+                $boton.prop("disabled",true);
+                $spin.fadeIn();
+                var usuario = $('[name="usuario"]').val();
+                var contrasena = $('[name="password"]').val();
+                $.ajax({
+                    url: "resultado.php",
+                    method:"POST", 
+                    dataType:"json",
+                    data:{
+                        usuario: usuario,
+                        password: contrasena,
+                    }
+                }).done(function(informacion){
+                    var json = informacion;
+    
+                    console.log(json);
+                    $boton.prop("disabled",false);
+                    $spin.fadeOut();
+    
+                    if(json.codigo == "0"){
+                         $("#mensaje").html(json,mensaje);
+                    }
+                    else if(json.codigo == "1"){
+                        window.location.href = "vip.php";
+                    }
+                    //$("#mensaje").html(informacion);
+                });
+            });
+        });
+
+        </script>
+ <!--modaal-->
+      <script>
+        $(document).ready(function(){
+        $("#btnregistrar").on("click", function(){
+        var $usuario = $("#usuarior");
+        var $password = $("#contrasena");
+        var $email = $("#email");
+
+        if($usuario.val().length==0){
+            $usuario.addClass("alert-danger");
+            setTimeout(function(){
+                $usuario.removeClass("alert-danger");
+            },3000);
+    
+            $("#error").fadeIn(2000).delay(4000).fadeOut(2000);
+        }
+    
+        if($password.val().length==0){
+            $password.addClass("alert-danger");
+            setTimeout(function(){
+                $password.removeClass("alert-danger");
+            },3000);
+    
+            $("#error").fadeIn(2000).delay(4000).fadeOut(2000);
+        }
+
         if($email.val().length==0){
             $email.addClass("alert-danger");
             setTimeout(function(){
@@ -32,9 +113,16 @@
     
             $("#error").fadeIn(2000).delay(4000).fadeOut(2000);
         }
+
     });
         });
-        </script>
+      </script>
+
+        <style>
+        .fa-spinner{
+            display:none;
+        }
+        </style>
 </head>
 <body>
     <header>
@@ -44,13 +132,11 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-              <button class="btn btn-outline-primary" data-target="#mimodal" data-role="modal" data-toggle="modal"> 
-                Registrate
-            </button>
+            
             </div>
           </nav>
     </header>
-    <!--modal-->
+                                         <!--modal-->
     <div class="modal fade" id="mimodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -61,24 +147,21 @@
             </button>
           </div>
           <div class="modal-body">
-              
-              <div class="form-group">
+         <form action="registroProceso.php" method="POST">
+         <div class="form-group">
                   <label>Nombre</label>
-                  <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre">  
-              </div>
-              <div class="form-group">
-                <label>Correo Electronico</label>
-                <input type="email" class="form-control" id="email"  placeholder="Ingresa tu Email">
+                  <input type="text" class="form-control" id="usuarior" name="usuarior" placeholder="Ingresa tu nombre">
               </div>
               <div class="form-group">
                 <label>Contraseña</label>
-                <input type="password" class="form-control" id="contraseña" placeholder="contraseña">
+                <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña">
               </div>
               <div class="form-group">
-                  <label>Confirma tu contraseña</label>
-                  <input type="password" class="form-control" id="concontraseña"placeholder="contraseña">
-                </div>
-              <button type="submit" class="btn btn-primary">Enviar</button>
+                <label>Correo electronico</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="correo electronico">
+              </div>
+              <button class="btn btn-primary" id="btnregistrar" >Registrarse</button>
+         </form>
           </div>
         </div>
       </div>
@@ -126,37 +209,45 @@
         <form>
             <section class="row container-fluid">
                 <div class="col-md-12 col-lg-12 col-sm-12">
-          <form>
+                    <form action="resultado.php" method="POST">
                 <div class="form-group">
-                    <label for="nombre">Usuario</label>
+                    <label for="usuario">Usuario</label>
                     <div class="input-group">
                     <div class="input-group-prepend">
                       <i class="fa fa-user input-group-text"></i>
                     </div>
-                    <input type="text" class="form-control" id="nombre"/>
+                    <input type="text" class="form-control" name="usuario" id="usuario">
                   </div>
 
                     <small class="form-text text-muted">Ingresa tu usuario</small>
                 </div>
 
                 <div class="form-group">
-                        <label for="email">Contraseña</label>
+                        <label for="contrasena">Contraseña</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                               <i class="fas fa-lock input-group-text"></i>
                           </div>
-                          <input type="email" class="form-control" id="email"/>
+                          <input type="password" class="form-control" name="password" id="password">
                         </div>
 
                         <small class="form-text text-muted">Ingresa tu contraseña</small>
                     </div>
           <p class="text-danger" id="error" style="display: none">Revisa tu nombre o contraseña</p>
           <div>
-              <button type="button" class="btn btn-primary" id="guardar">
-                  Iniciar sesión
-                </button>
+              
+              <button class="btn btn-primary" id="btnIniciar">Enviar datos</button>
+              <i class="fa fa-spinner fa-pulse"></i>
+              <div id="mensaje">
+              
+              </div>
+            </form>
+            
+                <a class="btn btn-outline-primary" data-target="#mimodal" data-role="modal" data-toggle="modal" id=registrar> 
+                  Registrate
+              </a>
                   </div>
-          </form>
+          
         </div>
       </section>
 </div>
