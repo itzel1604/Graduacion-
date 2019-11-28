@@ -71,7 +71,7 @@ session_destroy();
                          $("#mensaje").html(json,mensaje);
                     }
                     else if(json.codigo == "1"){
-                        window.location.href = "vip.php";
+                        window.location.href = "reservaciones.php";
                     }
                     //$("#mensaje").html(informacion);
                 });
@@ -79,11 +79,12 @@ session_destroy();
         });
 
         </script>
+
  <!--modaal-->
       <script>
         $(document).ready(function(){
         $("#btnregistrar").on("click", function(){
-        var $usuario = $("#usuarior");
+        var $usuario = $("#usuario");
         var $password = $("#contrasena");
         var $email = $("#email");
 
@@ -150,17 +151,17 @@ session_destroy();
          <form action="registroProceso.php" method="POST">
          <div class="form-group">
                   <label>Nombre</label>
-                  <input type="text" class="form-control" id="usuarior" name="usuarior" placeholder="Ingresa tu nombre">
+                  <input type="text" class="form-control" name="user" placeholder="Ingresa tu nombre de usuario">
               </div>
               <div class="form-group">
                 <label>Contraseña</label>
-                <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña">
+                <input type="password" class="form-control" name="contrasena" placeholder="Contraseña">
               </div>
               <div class="form-group">
                 <label>Correo electronico</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="correo electronico">
+                <input type="email" class="form-control" name="email" placeholder="correo electronico">
               </div>
-              <button class="btn btn-primary" id="btnregistrar" >Registrarse</button>
+              <button class="btn btn-primary" id="brnRegistrar" >Registrarse</button>
          </form>
           </div>
         </div>
@@ -236,7 +237,7 @@ session_destroy();
           <p class="text-danger" id="error" style="display: none">Revisa tu nombre o contraseña</p>
           <div>
               
-              <button class="btn btn-primary" id="btnIniciar">Enviar datos</button>
+              <button class="btn btn-primary" id="btnIniciar">Iniciar Sesión</button>
               <i class="fa fa-spinner fa-pulse"></i>
               <div id="mensaje">
               

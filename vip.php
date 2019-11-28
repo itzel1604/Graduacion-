@@ -4,7 +4,7 @@ session_start();
 $sesion = $_SESSION["usuario"];
 
 if(!isset($sesion)){
-    header("Location:login.php");
+    header("Location:graduacion.php");
 }
 ?>
 
